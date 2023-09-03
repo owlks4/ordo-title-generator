@@ -185,7 +185,7 @@ function updateTitle(){
     let sanityCheck = checkForMultipleInstancesOfACoil(coils);
 
     if (sanityCheck != null){
-        resultElement.textContent = "You've added multiple instances of Coil of "+capitalise(sanityCheck)+"!\n\nPlease either remove or change the coil type of the second instance.";
+        resultElement.textContent = "You've added multiple instances of Coil of "+capitalise(sanityCheck)+"!\n\nPlease either remove or change the second instance.";
         return;
     }
 
