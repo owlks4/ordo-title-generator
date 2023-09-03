@@ -253,4 +253,5 @@ function updateTitle(){
     document.documentElement.className = clan;
 }
 
+document.getElementById("swornNone").checked = true;
 updateTitle();
