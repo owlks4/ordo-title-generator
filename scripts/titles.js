@@ -74,6 +74,24 @@ function allCoilsAtSameLevel(coils){
     return true;
 }
 
+function allUnmasteredCoilsAtSameLevel(coils){
+
+    if (coils.length == 0){
+        return false;
+    }
+
+    let firstExample = getAnyUnmasteredCoil(coils);
+
+    for (let i = 0; i < coils.length; i++){
+        if (coils[i] != firstExample){
+            if (coils[i].rank < 3 && coils[i].rank != firstExample.rank){
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
 function hasCoil(coils, coilName){
 
     if (coils.length == 0){
@@ -111,6 +129,20 @@ function hasAnyCoilAtLevel(coils, rank){
     for (let i = 0; i < coils.length; i++){
         if (coils[i].rank == rank){
             return true;
+        }
+    }
+    return false;
+}
+
+function getAnyUnmasteredCoil(coils){
+
+    if (coils.length == 0){
+        return false;
+    }
+
+    for (let i = 0; i < coils.length; i++){
+        if (coils[i].rank < 3){
+            return coils[i];
         }
     }
     return false;
@@ -249,14 +281,7 @@ function updateTitle(){
 
     output += rankTitles[cumulativeCoilRanks];
 
-    if (coils.length > 0){
-        if (coils.length > 1 && allCoilsAtSameLevel(coils) && hasCoil(coils,"blood") && hasCoil(coils,"beast") && hasCoil(coils,"banes") && !hasCoilAtLevel(coils,"blood",3)){
-            output += " of the Fundament ";
-        }
-        else if ((coils.length > 1 && allCoilsAtSameLevel(coils) && !hasAnyCoilAtLevel(coils,3))){
-            output += " of Equilibrium ";
-        }
-        else if (secondaryCoil != null || primaryCoil != null) {
+    if (numberOfUnmasteredCoils(coils) > 0){
             output += " of the ";
 
             if (numberOfUnmasteredCoils(coils) >= 6){
@@ -268,18 +293,25 @@ function updateTitle(){
             else if (numberOfUnmasteredCoils(coils) >= 4){
                 output += "Invisible ";
             }
-            else if (secondaryCoil != null){
+            
+            if (secondaryCoil != null && !allUnmasteredCoilsAtSameLevel(coils)){
                 output += adjectives[secondaryCoil.coilName][1];
-            } else {
+            } else if (numberOfUnmasteredCoils(coils) == 1){
                 output += "Dedicated ";
             }
             
             output += " ";
             
-            if (primaryCoil != null){
+            if (numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils) && hasCoil(coils,"blood") && hasCoil(coils,"beast") && hasCoil(coils,"banes") && !hasCoilAtLevel(coils,"blood",3) && !hasCoilAtLevel(coils,"beast",3) && !hasCoilAtLevel(coils,"banes",3)){
+                output += "Fundament";
+            }
+            else if (numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils)){
+                output += "Equilibrium";
+                output = output.replace("of the","of");
+            }
+            else if (primaryCoil != null){
                 output += adjectives[primaryCoil.coilName][0]; 
             }
-        }
     }
 
     resultElement.textContent = output;
