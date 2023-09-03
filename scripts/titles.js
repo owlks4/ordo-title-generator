@@ -28,7 +28,8 @@ var swornPrefixes = {
     "heart": ["Feeling","Impaled","Flayed"],
     "labyrinth": ["Trial","Delirious","Bespoke"],
     "stasis": ["Change","Shifting","Amorphous"],
-    "predation": ["Hunt","Stalking","Apex"]
+    "predation": ["Hunt","Stalking","Apex"],
+    "custom": ["Test","Experimental","Curious"]
   }
 
 var rankTitles = ["Tineri","Supplicant","Scribe","Scholar","Initiate","Adept","Master","Philosopher","Illuminous","Architect","Visionary","Immortal","Auspicious","Genius","Eternal","Olympian","Nuncio","Palatine","Princeps","Magister","Emir","Boyar","Sovereign","Monarch","Caesar","Exarch","Bodhisattva","Transcendentalist","Incarnate","Optimus","Eldritch"];
@@ -120,6 +121,9 @@ function numberOfMasteredCoils(coils){
 function checkForMultipleInstancesOfACoil(coils){
     
     for (let i = 0; i < coils.length; i++){
+        if (coils[i].coilName == "custom"){
+            continue;
+        }
         for (let j = 0; j < coils.length; j++){
             if (i != j && coils[i].coilName === coils[j].coilName){
                 return coils[i].coilName;
@@ -219,7 +223,7 @@ function updateTitle(){
         if (coils.length > 1 && allCoilsAtSameLevel(coils) && hasCoil(coils,"blood") && hasCoil(coils,"beast") && hasCoil(coils,"banes")){
             output += " of the Fundament ";
         }
-        else if (coils.length > 1 && allCoilsAtSameLevel(coils)){
+        else if ((coils.length > 1 && allCoilsAtSameLevel(coils)) || (primaryCoil != null && secondaryCoil != null && primaryCoil.rank == secondaryCoil.rank)){
             output += " of Equilibrium ";
         }
         else if (secondaryCoil != null || primaryCoil != null) {
