@@ -74,3 +74,7 @@ table {
 .hidden {
     display: none;
 }
+
+.width60 {
+    width: 60%;
+}

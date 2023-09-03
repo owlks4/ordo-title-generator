@@ -4,92 +4,92 @@
         <link href="./style/style.css" rel="stylesheet">
     </head>
     <body>
-        <h1>
-            Ordo Title Generator
-        </h1>
-        <form>
-            <label for="clan"><strong>Clan:</strong></label>
+            <h1>
+                Ordo Title Generator
+            </h1>
+            <form>
+                <label for="clan"><strong>Clan:</strong></label>
 
-            <select name="clan" id="clan" onchange="updateTitle()">
-              <option value="ventrue">Ventrue</option>
-              <option value="daeva">Daeva</option>
-              <option value="mekhet">Mekhet</option>
-              <option value="gangrel">Gangrel</option>
-              <option value="nosferatu">Nosferatu</option>
-            </select>
+                <select name="clan" id="clan" onchange="updateTitle()">
+                <option value="ventrue">Ventrue</option>
+                <option value="daeva">Daeva</option>
+                <option value="mekhet">Mekhet</option>
+                <option value="gangrel">Gangrel</option>
+                <option value="nosferatu">Nosferatu</option>
+                </select>
 
-            <br>
-            <br>
-            <strong>Sworn type:</strong>
-            <div>
-                <input type="radio" id="swornNone" name="swornType" checked="true" onchange="updateTitle()">
-                <label for="swornNone">None</label><br>
-                <input type="radio" id="swornRed" name="swornType" checked="false" onchange="updateTitle()">
-                <label for="swornRed" class="axe">the Axe</label><br>
-                <input type="radio" id="swornBlue" name="swornType" checked="false" onchange="updateTitle()">
-                <label for="swornBlue" class="dyingLight">the Dying Light</label><br>
-                <input type="radio" id="swornBlack" name="swornType" checked="false" onchange="updateTitle()">
-                <label for="swornBlue" class="mysteries"><strong>the Mysteries</strong></label><br> 
-            </div>
-                  <br>
-            <div id = "swornRankDiv">
-                <label for="swornRank"><strong>Sworn rank:</strong></label>
-                <select name="swornRank" id="swornRank" value="0" onchange="updateTitle()">
-                    <option value="initiate">Initiate</option>
-                    <option value="established">Established</option>
-                    <option value="master">Master</option>        
-                </select> 
                 <br>
-            </div>         
-            <hr>
-            <h2>Coils</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <td><strong>Coil</strong></td>
-                        <td><strong>Rank</strong></td>
-                        <td></td>
-                        <td></td>
-                    </tr>
-                </thead>
-                <tbody id="coilTableBody">
-                </tbody>
-                <tfoot>
-                    <tr id="coilTableDummyRow">
-                        <td><button type="button" onclick="addCoil()">Add...</button></td>
-                    </tr>
-                </tfoot>
-            </table>
-            <h2>Scales</h2>
-            <label for="scales"><strong>Number of scales mastered:</strong></label>
-            <input name="scales" id="scalesMastered" type="number" value="0" min="0" max="9999" onchange="updateTitle()">
+                <br>
+                <strong>Sworn type:</strong>
+                <div>
+                    <input type="radio" id="swornNone" name="swornType" checked="true" onchange="updateTitle()">
+                    <label for="swornNone">None</label><br>
+                    <input type="radio" id="swornRed" name="swornType" checked="false" onchange="updateTitle()">
+                    <label for="swornRed" class="axe">the Axe</label><br>
+                    <input type="radio" id="swornBlue" name="swornType" checked="false" onchange="updateTitle()">
+                    <label for="swornBlue" class="dyingLight">the Dying Light</label><br>
+                    <input type="radio" id="swornBlack" name="swornType" checked="false" onchange="updateTitle()">
+                    <label for="swornBlue" class="mysteries"><strong>the Mysteries</strong></label><br> 
+                </div>
+                    <br>
+                <div id = "swornRankDiv">
+                    <label for="swornRank"><strong>Sworn rank:</strong></label>
+                    <select name="swornRank" id="swornRank" value="0" onchange="updateTitle()">
+                        <option value="initiate">Initiate</option>
+                        <option value="established">Established</option>
+                        <option value="master">Master</option>        
+                    </select> 
+                    <br>
+                </div>         
+                <hr>
+                <h2>Coils</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <td><strong>Coil</strong></td>
+                            <td><strong>Rank</strong></td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                    </thead>
+                    <tbody id="coilTableBody">
+                    </tbody>
+                    <tfoot>
+                        <tr id="coilTableDummyRow">
+                            <td><button type="button" onclick="addCoil()">Add...</button></td>
+                        </tr>
+                    </tfoot>
+                </table>
+                <h2>Scales</h2>
+                <label for="scales"><strong>Number of scales mastered:</strong></label>
+                <input name="scales" id="scalesMastered" type="number" value="0" min="0" max="9999" onchange="updateTitle()">
 
-            <template id="coilRowTemplate">
-                <tr>
-                  <td>
-                    <select name="coilType" onchange="updateTitle()" selectedIndex="0">
-                        <option value="blood">Blood</option>
-                        <option value="beast">Beast</option>
-                        <option value="banes">Banes</option>     
-                        <option value="ouroboros">Ouroboros</option>    
-                        <option value="voivode">Voivode</option>    
-                        <option value="life">Life</option>    
-                        <option value="heart">Heart</option>    
-                        <option value="labyrinth">Labyrinth</option>    
-                        <option value="stasis">Stasis</option>    
-                        <option value="predation">Predation</option>    
-                    </select> </td>
-                  <td><input type="number" value="1" min="1" max="3" onchange="updateTitle()"/>
-                  </td>
-                  <td><button type="button" onclick="removeCoil(this)">Remove</button></td>
-                </tr>
-              </template>
-        </form>
-        <br>
-        <hr>
-        <h2>Result:</h2>
-        <h3 id="result"></h3>
-        <br>
+                <template id="coilRowTemplate">
+                    <tr>
+                    <td>
+                        <select name="coilType" onchange="updateTitle()" selectedIndex="0">
+                            <option value="blood">Blood</option>
+                            <option value="beast">Beast</option>
+                            <option value="banes">Banes</option>     
+                            <option value="ouroboros">Ouroboros</option>    
+                            <option value="voivode">Voivode</option>    
+                            <option value="life">Life</option>    
+                            <option value="heart">Heart</option>    
+                            <option value="labyrinth">Labyrinth</option>    
+                            <option value="stasis">Stasis</option>    
+                            <option value="predation">Predation</option>    
+                        </select> </td>
+                    <td><input type="number" class="width60" value="1" min="1" max="3" onchange="updateTitle()"/>
+                    </td>
+                    <td><button type="button" onclick="removeCoil(this)">Remove</button></td>
+                    </tr>
+                </template>
+            </form>
+            <br>
+            <hr>
+            <h2>Result:</h2>
+            <h3 id="result"></h3>
+            <br>
     </body>
     <script src="./scripts/titles.js"></script>
 </html>
