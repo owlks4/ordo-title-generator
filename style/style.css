@@ -1,0 +1,75 @@
+* {
+    font-family:'Courier New', Courier, monospace;
+}
+
+html {
+    background-color: black;
+    color: rgb(255, 192, 110);
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background-color: rgba(64,64,64,0.75);
+    padding: 0.5em 3em;
+    margin:  5% 35%;
+    border-radius: 2em;
+}
+
+h1 {
+    text-shadow: 0.05em 0.05em rgba(0,0,0,0.1);
+}
+
+table {
+    background-color: rgba(128,128,128,0.5);
+    border-radius:0.25em;
+    padding: 0.5em
+}
+
+.ventrue{
+    background: linear-gradient(135deg, rgba(62,34,0,1) 0%, rgba(8,0,27,1) 100%);
+}
+
+.daeva {
+    background: linear-gradient(135deg, rgba(62,34,0,1) 0%, rgba(0,2,23,1) 100%);
+}
+
+.mekhet {
+    background: linear-gradient(135deg, rgba(62,34,0,1) 0%, rgba(0,16,23,1) 100%);
+}
+
+.gangrel {
+    background: linear-gradient(135deg, rgba(62,34,0,1) 0%, rgba(3,18,0,1) 100%);
+}
+
+.nosferatu {
+    background: linear-gradient(135deg, rgba(62,34,0,1) 0%, rgba(18,12,0,1) 100%);
+}
+
+
+#result {
+    background-color: rgba(128,128,128,0.5);
+    padding: 0.5em 1em;
+    border-radius: 2em;
+    text-align: center;
+}
+
+.axe{
+    color:rgb(230,0,0)
+}
+
+.dyingLight{
+    color:skyblue
+}
+
+.mysteries{
+    color:black
+}
+
+.displayed {
+    display: block;
+}
+
+.hidden {
+    display: none;
+}
