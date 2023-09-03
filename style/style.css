@@ -12,8 +12,8 @@ html {
 body {
     background-color: rgba(64,64,64,0.75);
     padding: 0.5em 3em;
-    margin:  5% 40em;
-    width: 40em;
+    margin:  5% auto;
+    width: 35em;
     border-radius: 2em;
 }
 
