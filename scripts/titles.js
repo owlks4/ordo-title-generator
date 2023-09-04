@@ -28,8 +28,7 @@ var swornPrefixes = {
     "heart": ["Feeling","Impaled","Flayed"],
     "labyrinth": ["Trial","Delirious","Bespoke"],
     "stasis": ["Change","Shifting","Amorphous"],
-    "predation": ["Hunt","Stalking","Apex"],
-    "custom": ["Test","Experimental","Curious"]
+    "predation": ["Hunt","Stalking","Apex"]
   }
 
 var rankTitles = ["Tineri","Supplicant","Scribe","Scholar","Initiate","Adept","Master","Philosopher","Illuminous","Architect","Visionary","Immortal","Auspicious","Genius","Eternal","Olympian","Nuncio","Palatine","Princeps","Magister","Emir","Boyar","Sovereign","Monarch","Caesar","Exarch","Bodhisattva","Transcendentalist","Incarnate","Optimus","Eldritch"];
@@ -180,6 +179,23 @@ function numberOfUnmasteredCoils(coils){
     return output;
 }
 
+
+function numberOfUnmasteredCustomCoils(coils){
+
+    if (coils.length == 0){
+        return 0;
+    }
+
+    let output = 0;
+
+    for (let i = 0; i < coils.length; i++){
+        if (coils[i].coilName == "custom" && coils[i].rank < 3){
+            output++;
+        }
+    }
+    return output;
+}
+
 function checkForMultipleInstancesOfACoil(coils){
     
     for (let i = 0; i < coils.length; i++){
@@ -194,6 +210,20 @@ function checkForMultipleInstancesOfACoil(coils){
     }
 
     return null;
+}
+
+function getInvisibleAetherialOrSidereal(coils){
+    if (numberOfUnmasteredCoils(coils) >= 6){
+        return "Sidereal ";
+    }
+    else if (numberOfUnmasteredCoils(coils) >= 5){
+        return "Aetherial ";
+    }
+    else if (numberOfUnmasteredCoils(coils) >= 4){
+        return "Invisible ";
+    } else {
+        return "";
+    }
 }
 
 function capitalise(input){
@@ -235,7 +265,7 @@ function updateTitle(){
         let coil = new Coil(coilName,coilRank);
         coils.push(coil);
         cumulativeCoilRanks += coilRank;
-        if (coil.rank != 3){
+        if (coil.rank != 3 && coil.coilName != "custom"){
             if (primaryCoil == null || coil.rank > primaryCoil.rank){
                 if (primaryCoil != null && (secondaryCoil == null || secondaryCoil.rank < primaryCoil.rank)){   //if we're displacing a coil that we had already evaluated to be the primary coil, demote it to secondary instead of removing it entirely
                     secondaryCoil = primaryCoil;
@@ -270,29 +300,33 @@ function updateTitle(){
     }
     else if (numberOfMasteredCoils(coils) >= 1){
         for (let i = 0; i < coils.length; i++){
-            if (coils[i].rank == 3){
+            if (coils[i].rank == 3 && coils[i].coilName != "custom"){
                 output += adjectives[coils[i].coilName][2] + " ";    
             }
         }
     }
 
+    if(hasCoil(coils,"custom")){
+        output += "Experimental ";
+    }
+
+    if (numberOfUnmasteredCoils(coils) <= numberOfUnmasteredCustomCoils(coils)){ //if all your unmastered coils are custom coils, then reckon sidereal etc here, because they won't fire later on as there won't be a primary or secondary coil
+        output += getInvisibleAetherialOrSidereal(coils);
+    }
+
     let clan = document.getElementById("clan").value;
     output += clanPrefixes[clan];
 
-    output += rankTitles[cumulativeCoilRanks];
+    let rankTitle = rankTitles[cumulativeCoilRanks];
+    if (rankTitle == undefined){
+        rankTitle = "Undefined";   
+    }
+    output += rankTitle;
 
-    if (numberOfUnmasteredCoils(coils) > 0){
+    if (numberOfUnmasteredCoils(coils) > 0 && numberOfUnmasteredCoils(coils) > numberOfUnmasteredCustomCoils(coils)){
             output += " of the ";
 
-            if (numberOfUnmasteredCoils(coils) >= 6){
-                output += "Sidereal ";
-            }
-            else if (numberOfUnmasteredCoils(coils) >= 5){
-                output += "Aetherial ";
-            }
-            else if (numberOfUnmasteredCoils(coils) >= 4){
-                output += "Invisible ";
-            }
+            output += getInvisibleAetherialOrSidereal(coils);
             
             if (secondaryCoil != null && !allUnmasteredCoilsAtSameLevel(coils)){
                 output += adjectives[secondaryCoil.coilName][1];
