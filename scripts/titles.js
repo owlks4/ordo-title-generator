@@ -306,10 +306,6 @@ function updateTitle(){
         }
     }
 
-    if(hasCoil(coils,"custom")){
-        output += "Experimental ";
-    }
-
     if (numberOfUnmasteredCoils(coils) <= numberOfUnmasteredCustomCoils(coils)){ //if all your unmastered coils are custom coils, then reckon sidereal etc here, because they won't fire later on as there won't be a primary or secondary coil
         output += getInvisibleAetherialOrSidereal(coils);
     }
@@ -323,14 +319,21 @@ function updateTitle(){
     }
     output += rankTitle;
 
-    if (numberOfUnmasteredCoils(coils) > 0 && numberOfUnmasteredCoils(coils) > numberOfUnmasteredCustomCoils(coils)){
+    if ((numberOfUnmasteredCoils(coils) > 0 && numberOfUnmasteredCoils(coils) > numberOfUnmasteredCustomCoils(coils)) || hasCoil(coils,"custom")){
             output += " of the ";
+
+            if(hasCoil(coils,"custom")){
+                if (numberOfUnmasteredCoils(coils) == 1){
+                    output += "Dedicated ";
+                } 
+                output += "Experimental ";
+            }
 
             output += getInvisibleAetherialOrSidereal(coils);
             
             if (secondaryCoil != null && !allUnmasteredCoilsAtSameLevel(coils)){
                 output += adjectives[secondaryCoil.coilName][1];
-            } else if (numberOfUnmasteredCoils(coils) == 1){
+            } else if (numberOfUnmasteredCoils(coils) == 1 && !hasCoil(coils,"custom")){
                 output += "Dedicated ";
             }
             
