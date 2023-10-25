@@ -14,7 +14,7 @@ body {
     padding: 0.5em 3em;
     margin:  5% auto;
     width: 35em;
-    border-radius: 2em;
+    border-radius: 1em;
 }
 
 h1 {
@@ -51,7 +51,7 @@ table {
 #result {
     background-color: rgba(128,128,128,0.5);
     padding: 0.5em 1em;
-    border-radius: 2em;
+    border-radius: 1em;
     text-align: center;
 }
 
