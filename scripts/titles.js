@@ -234,8 +234,14 @@ function capitalise(input){
     return input.charAt(0).toUpperCase() + input.slice(1)
 }
 
-function updateTitle(){
+function updateTitle(sender){
     let output = "";
+
+    if (sender != null){
+        if (sender.value > sender.max){
+            sender.value = sender.max;
+        }
+    }
 
     let swornType = "none";
 
