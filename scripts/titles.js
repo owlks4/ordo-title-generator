@@ -237,21 +237,6 @@ function capitalise(input){
 function updateTitle(sender){
     let output = "";
 
-    if (sender != null){
-        let v = parseInt(sender.value);
-        if (isNaN(v)){
-            sender.value = sender.min;
-        } else if (v > parseInt(sender.max)){
-            sender.value = sender.max;
-            sender.select();
-            return;
-        } else if (v < parseInt(sender.min)){
-            sender.value = sender.min;
-            sender.select();
-            return;
-        }
-    }
-
     let swornType = "none";
 
     if (document.getElementById("swornRed").checked == true){
@@ -281,6 +266,13 @@ function updateTitle(sender){
         let coilNameElement = coilTable.children[i].children[0].children[0];
         let coilName = coilNameElement.options[coilNameElement.selectedIndex].value;
         let coilRank = parseInt(coilTable.children[i].children[1].firstChild.value);
+        if (isNaN(coilRank)){
+            coilRank = 1;
+        } else if (coilRank > 3){
+            coilRank = 3;
+        } else if (coilRank < 1){
+            coilRank = 1;
+        }        
         let coil = new Coil(coilName,coilRank);
         coils.push(coil);
         cumulativeCoilRanks += coilRank;
