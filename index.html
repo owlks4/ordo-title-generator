@@ -7,12 +7,16 @@
         <link href="./style/style.css" rel="stylesheet">
     </head>
     <body>
+        <main>
             <h1>
                 Ordo Title Generator
             </h1>
             <form>
-                <label for="clan"><strong>Clan:</strong></label>
-
+                <label for="clan">
+                    <strong>
+                        Clan:
+                    </strong>
+                </label>
                 <select name="clan" id="clan" onchange="updateTitle()">
                 <option value="ventrue">Ventrue</option>
                 <option value="daeva">Daeva</option>
@@ -64,8 +68,15 @@
                     </tfoot>
                 </table>
                 <h2>Scales</h2>
-                <label for="scales"><strong>Number of scales mastered:</strong></label>
-                <input name="scales" id="scalesMastered" type="number" value="0" min="0" max="9999" onchange="updateTitle()">
+                <div style="display:flex;">
+                    <label for="scales" style="margin-right:0.25em;">
+                        <strong>
+                            Number of scales mastered:
+                        </strong>
+                    </label>
+                    <input name="scales" id="scalesMastered" type="number" value="0" min="0" max="9999" onchange="updateTitle()">
+                </div>
+                
 
                 <template id="coilRowTemplate">
                     <tr>
@@ -94,6 +105,7 @@
             <h2>Result:</h2>
             <h3 id="result"></h3>
             <br>
+        </main>
     </body>
     <script src="./scripts/titles.js"></script>
 </html>
