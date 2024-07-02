@@ -238,8 +238,17 @@ function updateTitle(sender){
     let output = "";
 
     if (sender != null){
-        if (sender.value > sender.max){
+        let v = parseInt(sender.value);
+        if (isNaN(v)){
+            sender.value = sender.min;
+        } else if (v > parseInt(sender.max)){
             sender.value = sender.max;
+            sender.select();
+            return;
+        } else if (v < parseInt(sender.min)){
+            sender.value = sender.min;
+            sender.select();
+            return;
         }
     }
 
