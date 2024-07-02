@@ -5,15 +5,44 @@
 html {
     background-color: black;
     color: rgb(255, 192, 110);
-    height: 100%;
     margin: 0;
 }
 
 body {
+    margin: 0;
+    background-color: black;
+    display:flex;
+    justify-content: center;
+    min-height:100vh;
+}
+
+.mobile-font-size {
+    font-size: 2em;
+}
+
+.mobile-font-size select {
+    font-size: 1em;
+}
+
+.mobile-font-size button {
+    font-size: 1em;
+}
+
+.mobile-font-size input {
+    font-size: 1em;
+}
+
+.mobile-font-size input[type=number] {
+    font-size: 1em;
+  }
+
+main {
     background-color: rgba(64,64,64,0.75);
+    margin-top:5%;
+    margin-bottom:5%;
     padding: 0.5em 3em;
-    margin:  5% auto;
-    width: 35em;
+    width: fit-content;
+    height:fit-content;
     border-radius: 1em;
 }
 

@@ -37,6 +37,10 @@ coilTable = document.getElementById("coilTableBody");
 coilRowTemplate = document.getElementById("coilRowTemplate");
 resultElement = document.getElementById("result");
 
+if (window.innerWidth < window.innerHeight) {
+    document.documentElement.className = "mobile-font-size"
+}
+
 function addCoil(){
     newCoilRow = coilRowTemplate.content.cloneNode(true);
     coilTable.appendChild(newCoilRow);
@@ -353,7 +357,7 @@ function updateTitle(){
 
     resultElement.textContent = output;
 
-    document.documentElement.className = clan;
+    document.body.className = clan;
 }
 
 document.getElementById("swornNone").checked = true;
