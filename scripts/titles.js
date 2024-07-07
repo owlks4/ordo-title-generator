@@ -234,7 +234,7 @@ function capitalise(input){
     return input.charAt(0).toUpperCase() + input.slice(1)
 }
 
-function updateTitle(sender){
+function updateTitle(){
     let output = "";
 
     let swornType = "none";
