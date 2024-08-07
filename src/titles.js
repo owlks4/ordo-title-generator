@@ -39,6 +39,7 @@ resultElement = document.getElementById("result");
 
 if (window.innerWidth < window.innerHeight) {
     document.documentElement.className = "mobile-font-size"
+    document.getElementById("result").style = "max-width:70vw;"
 }
 
 function addCoil(){
