@@ -4,7 +4,7 @@
         <meta property="og:type" content="website">
         <meta property="og:title" content="Ordo Title Generator">
         <meta property="og:image" content="./preview.png">
-        <link href="./style/style.css" rel="stylesheet">
+        <link href="./src/style.css" rel="stylesheet">
     </head>
     <body>
         <main>
@@ -99,11 +99,11 @@
                     <option value="predation">Predation</option>
                     <option value="custom">(Eldritch Coil)</option>    
                 </select> </td>
-            <td><input type="number" class="width60" value="1" min="1" max="3" onchange="updateTitle()" oninput="updateTitle()"/>
+            <td><input type="number" class="width80" value="1" min="1" max="3" onchange="updateTitle()" oninput="updateTitle()"/>
             </td>
             <td><button type="button" onclick="removeCoil(this)">Remove</button></td>
             </tr>
         </template>
     </body>
-    <script src="./scripts/titles.js"></script>
+    <script src="./src/titles.js"></script>
 </html>
