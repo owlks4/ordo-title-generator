@@ -297,6 +297,11 @@ function updateTitle(){
         return;
     }
 
+    if (cumulativeCoilRanks > 30){
+        resultElement.textContent = "Keep it up! 99% of Ordo quit just before they achieve ascension 🙂";
+        return;
+    }
+
     let scalesMastered = document.getElementById("scalesMastered").value;
     if (scalesMastered >= 6){
         output += "Armoured ";
