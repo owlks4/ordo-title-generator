@@ -202,7 +202,6 @@ function numberOfUnmasteredCustomCoils(coils){
 }
 
 function checkForMultipleInstancesOfACoil(coils){
-    
     for (let i = 0; i < coils.length; i++){
         if (coils[i].coilName == "custom"){
             continue;
@@ -213,19 +212,18 @@ function checkForMultipleInstancesOfACoil(coils){
             }
         }
     }
-
     return null;
 }
 
 function getInvisibleAetherialOrSidereal(coils){
     if (numberOfUnmasteredCoils(coils) >= 6){
-        return "Sidereal ";
+        return "<span title='has six or more in-progress coils'>Sidereal </span>";
     }
     else if (numberOfUnmasteredCoils(coils) >= 5){
-        return "Aetherial ";
+        return "<span title='has five in-progress coils'>Aetherial </span>";
     }
     else if (numberOfUnmasteredCoils(coils) >= 4){
-        return "Invisible ";
+        return "<span title='has four in-progress coils'>Invisible </span>";
     } else {
         return "";
     }
@@ -252,7 +250,7 @@ function updateTitle(){
 
     if (swornType != "none"){
         let swornRank = document.getElementById("swornRank").value;
-        output += swornPrefixes[swornType+"_"+swornRank];  
+        output += "<span title='Sworn rank: "+swornType + " " + swornRank+"'>"+swornPrefixes[swornType+"_"+swornRank]+"</span>";  
         swornRankDiv.className = "displayed"
     } else {
         swornRankDiv.className = "hidden"
@@ -293,32 +291,32 @@ function updateTitle(){
     let sanityCheck = checkForMultipleInstancesOfACoil(coils);
 
     if (sanityCheck != null){
-        resultElement.textContent = "You've added multiple instances of Coil of "+capitalise(sanityCheck)+"!\n\nPlease either remove or change the second instance.";
+        resultElement.innerHTML = "You've added multiple instances of Coil of "+capitalise(sanityCheck)+"!\n\nPlease either remove or change the second instance.";
         return;
     }
 
     if (cumulativeCoilRanks > 30){
-        resultElement.textContent = "Keep it up! 99% of Ordo quit just before they achieve ascension 🙂";
+        resultElement.innerHTML = "Keep it up! 99% of Ordo quit just before they achieve ascension 🙂";
         return;
     }
 
     let scalesMastered = document.getElementById("scalesMastered").value;
     if (scalesMastered >= 6){
-        output += "Armoured ";
+        output += "<span title='has at least 6 scales'>Armoured </span>";
     } else if (scalesMastered >= 3){
-        output += "Plated ";
+        output += "<span title='has at least 3 scales'>Plated </span>";
     }
 
     if (numberOfMasteredCoils(coils) >= 3 && hasCoilAtLevel(coils,"blood",3) && hasCoilAtLevel(coils,"beast",3) && hasCoilAtLevel(coils,"banes",3)){
-        output += "Draconic ";
+        output += "<span title='has mastered at least the three core coils'>Draconic </span>";
     }
     else if (numberOfMasteredCoils(coils) >= 3){
-        output += "Travelling ";
+        output += "<span title='has mastered at least three coils, at least one of which is not in the three core coils'>Travelling </span>";
     }
     else if (numberOfMasteredCoils(coils) >= 1){
         for (let i = 0; i < coils.length; i++){
             if (coils[i].rank == 3 && coils[i].coilName != "custom"){
-                output += adjectives[coils[i].coilName][2] + " ";    
+                output += "<span title='has mastered coil of "+coils[i].coilName+"'>"+adjectives[coils[i].coilName][2] + " </span>";    
             }
         }
     }
@@ -328,47 +326,47 @@ function updateTitle(){
     }
 
     let clan = document.getElementById("clan").value;
-    output += clanPrefixes[clan];
+    output += "<span title='member of clan "+clan+"'>"+clanPrefixes[clan]+"</span>";
 
     let rankTitle = rankTitles[cumulativeCoilRanks];
     if (rankTitle == undefined){
         rankTitle = "Undefined";   
     }
-    output += rankTitle;
+    output += "<span title='has "+cumulativeCoilRanks+" total coil tiers'>"+rankTitle+"</span>";
 
     if ((numberOfUnmasteredCoils(coils) > 0 && numberOfUnmasteredCoils(coils) > numberOfUnmasteredCustomCoils(coils)) || hasCoil(coils,"custom")){
             output += " of the ";
 
             if(hasCoil(coils,"custom")){
                 if (numberOfUnmasteredCoils(coils) == 1){
-                    output += "Dedicated ";
+                    output += "<span title='has only a single in-progress coil'>Dedicated </span>";
                 } 
-                output += "Experimental ";
+                output += "<span title='Eldritch coil'>Experimental </span>";
             }
 
             output += getInvisibleAetherialOrSidereal(coils);
             
             if (secondaryCoil != null && !allUnmasteredCoilsAtSameLevel(coils)){
-                output += adjectives[secondaryCoil.coilName][1];
+                output += "<span title='Secondary coil is coil of "+secondaryCoil.coilName+"'>"+adjectives[secondaryCoil.coilName][1]+"</span>";
             } else if (numberOfUnmasteredCoils(coils) == 1 && !hasCoil(coils,"custom")){
-                output += "Dedicated ";
+                output += "<span title='has only a single in-progress coil'>Dedicated </span>";
             }
             
             output += " ";
             
             if (numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils) && hasCoil(coils,"blood") && hasCoil(coils,"beast") && hasCoil(coils,"banes") && !hasCoilAtLevel(coils,"blood",3) && !hasCoilAtLevel(coils,"beast",3) && !hasCoilAtLevel(coils,"banes",3)){
-                output += "Fundament";
+                output += "<span title='has the three core coils at the same level'>Fundament</span>";
             }
             else if (numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils)){
-                output += "Equilibrium";
+                output += "<span title='All unmastered coils are at the same level'>Equilibrium</span>";
                 output = output.replace("of the","of");
             }
             else if (primaryCoil != null){
-                output += adjectives[primaryCoil.coilName][0]; 
+                output += "<span title='Primary coil is coil of "+primaryCoil.coilName+"'>"+adjectives[primaryCoil.coilName][0]+"</span>"; 
             }
     }
 
-    resultElement.textContent = output;
+    resultElement.innerHTML = output;
 
     document.body.className = clan;
 }
