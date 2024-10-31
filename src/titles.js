@@ -37,6 +37,8 @@ coilTable = document.getElementById("coilTableBody");
 coilRowTemplate = document.getElementById("coilRowTemplate");
 resultElement = document.getElementById("result");
 
+let useShorthandTitleCheckbox = document.getElementById("shorthand-checkbox");
+
 if (window.innerWidth < window.innerHeight) {
     document.documentElement.className = "mobile-font-size"
     document.getElementById("result").style = "max-width:70vw;"
@@ -233,6 +235,65 @@ function capitalise(input){
     return input.charAt(0).toUpperCase() + input.slice(1)
 }
 
+function hasHigherRankThanAllCoilsInThisArray(c, arr){
+    for(let i = 0; i < arr.length; i++){
+        if (c.rank <= i.rank){
+            return false;
+        }
+    }
+    return true;
+}
+
+function getRelevantRadButton(coil, primarySecondaryType){
+    return primarySecondaryType == "primary" ? coil.priorityPrimaryRadioButton : coil.prioritySecondaryRadioButton;
+}
+
+function retrieveThePrioritisedCoilFromArray(arr, type, allCoils){
+
+    if (arr.length == 0){
+        return null;
+    }
+
+    if (arr.length == 1){
+        console.log("Only 1 relevant in "+type+" category")
+        getRelevantRadButton(arr[0], type).checked = true;
+        allCoils.forEach((coil) => {
+            getRelevantRadButton(coil, type).disabled = true;
+        });
+        return arr[0];
+    }
+
+    let isAnyCoilInListChecked = false;
+
+    allCoils.forEach((coil) => {
+        if (arr.includes(coil)) {
+            getRelevantRadButton(coil, type).disabled = false;
+        } else {
+            getRelevantRadButton(coil, type).disabled = true;
+        }
+    });
+
+    for (let i = 0; i < arr.length; i++){
+        let radButton = getRelevantRadButton(arr[i], type);
+        if (radButton.checked){
+            console.log("Is any became true")
+            isAnyCoilInListChecked = true;
+        }
+    }
+    if (!isAnyCoilInListChecked){ //if no radio buttons were checked, use this to make sure at least one of them is.
+        let firstRelevantRadioButton = getRelevantRadButton(arr[0], type);
+        console.log("Checking first in "+type+" list")
+        firstRelevantRadioButton.checked = true;
+    }
+
+    for (let i = 0; i < arr.length; i++){
+        let radButton = getRelevantRadButton(arr[i], type);
+        if (radButton.checked){
+            return arr[i];
+        }
+    }
+}
+
 function updateTitle(){
     let output = "";
 
@@ -261,6 +322,9 @@ function updateTitle(){
     let primaryCoil = null;
     let secondaryCoil = null;
 
+    let allCoilsThatCouldBePrimary = [];
+    let allCoilsThatCouldBeSecondary = [];
+
     for (let i = 0; i < coilTable.children.length; i++){
         let coilNameElement = coilTable.children[i].children[0].children[0];
         let coilName = coilNameElement.options[coilNameElement.selectedIndex].value;
@@ -273,20 +337,42 @@ function updateTitle(){
             coilRank = 1;
         }        
         let coil = new Coil(coilName,coilRank);
+
+        coil.priorityPrimaryRadioButton = coilTable.children[i].children[3].firstChild;
+        coil.priorityPrimaryRadioButton.oninput = ()=>{updateTitle();};
+
+        coil.prioritySecondaryRadioButton = coilTable.children[i].children[4].firstChild;
+        coil.prioritySecondaryRadioButton.oninput = ()=>{updateTitle();};
+
         coils.push(coil);
         cumulativeCoilRanks += coilRank;
+    }
+
+    coils.sort((a,b)=>{return a.rank == b.rank ? 0 : (a.rank > b.rank ? -1 : 1)}); //sort coils into reverse rank order (so that the primary/secondary calculations flow naturally and we don't have to constantly dethrone coils that were previously thought to hold the position but actually don't)
+
+    coils.forEach((coil) => {
         if (coil.rank != 3 && coil.coilName != "custom"){
-            if (primaryCoil == null || coil.rank > primaryCoil.rank){
-                if (primaryCoil != null && (secondaryCoil == null || secondaryCoil.rank < primaryCoil.rank)){   //if we're displacing a coil that we had already evaluated to be the primary coil, demote it to secondary instead of removing it entirely
-                    secondaryCoil = primaryCoil;
-                }
-                primaryCoil = coil;
-            }
-            if ((secondaryCoil == null && coil != primaryCoil) || (coil.rank < primaryCoil.rank && coil.rank > secondaryCoil.rank)){
-                secondaryCoil = coil;
+            if (allCoilsThatCouldBePrimary.length == 0){ //if we're the first coil below three tiers to be processed, because we ordered by rank, it must be a primary coil
+                allCoilsThatCouldBePrimary = [coil];
+            } else if (coil.rank == allCoilsThatCouldBePrimary[0].rank){ //if we're the same rank as the first primary coil, then this is also a primary coil
+                allCoilsThatCouldBePrimary.push(coil);
+            } else if (allCoilsThatCouldBeSecondary.length == 0){ //otherwise, we must be secondary. if we're the first secondary, populate the secondary list with us.
+                allCoilsThatCouldBeSecondary = [coil];
+            } else if (coil.rank == allCoilsThatCouldBeSecondary[0].rank){ //if we're the same rank as the first secondary coil, then this is also a secondary coil
+                allCoilsThatCouldBeSecondary.push(coil);
             }
         }
-    }
+    });
+
+    primaryCoil = retrieveThePrioritisedCoilFromArray(allCoilsThatCouldBePrimary, "primary", coils);
+
+    allCoilsThatCouldBePrimary.forEach(coil => {  //all primary coils that are not the one on display now get pushed into being secondary coils
+        if (coil != primaryCoil){
+            allCoilsThatCouldBeSecondary.push(coil);
+        }
+    });
+ 
+    secondaryCoil = retrieveThePrioritisedCoilFromArray(allCoilsThatCouldBeSecondary, "secondary", coils);
 
     let sanityCheck = checkForMultipleInstancesOfACoil(coils);
 
@@ -307,10 +393,10 @@ function updateTitle(){
         output += "<span title='has at least 3 scales'>Plated </span>";
     }
 
-    if (numberOfMasteredCoils(coils) >= 3 && hasCoilAtLevel(coils,"blood",3) && hasCoilAtLevel(coils,"beast",3) && hasCoilAtLevel(coils,"banes",3)){
+    if (useShorthandTitleCheckbox.checked && numberOfMasteredCoils(coils) >= 3 && hasCoilAtLevel(coils,"blood",3) && hasCoilAtLevel(coils,"beast",3) && hasCoilAtLevel(coils,"banes",3)){
         output += "<span title='has mastered at least the three core coils'>Draconic </span>";
     }
-    else if (numberOfMasteredCoils(coils) >= 3){
+    else if (useShorthandTitleCheckbox.checked && numberOfMasteredCoils(coils) >= 3){
         output += "<span title='has mastered at least three coils, at least one of which is not in the three core coils'>Travelling </span>";
     }
     else if (numberOfMasteredCoils(coils) >= 1){
@@ -344,9 +430,9 @@ function updateTitle(){
                 output += "<span title='Eldritch coil'>Experimental </span>";
             }
 
-            output += getInvisibleAetherialOrSidereal(coils);
+            output += getInvisibleAetherialOrSidereal(coils);       
             
-            if (secondaryCoil != null && !allUnmasteredCoilsAtSameLevel(coils)){
+            if (secondaryCoil != null && !(useShorthandTitleCheckbox.checked && allUnmasteredCoilsAtSameLevel(coils))){
                 output += "<span title='Secondary coil is coil of "+secondaryCoil.coilName+"'>"+adjectives[secondaryCoil.coilName][1]+"</span>";
             } else if (numberOfUnmasteredCoils(coils) == 1 && !hasCoil(coils,"custom")){
                 output += "<span title='has only a single in-progress coil'>Dedicated </span>";
@@ -354,10 +440,10 @@ function updateTitle(){
             
             output += " ";
             
-            if (numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils) && hasCoil(coils,"blood") && hasCoil(coils,"beast") && hasCoil(coils,"banes") && !hasCoilAtLevel(coils,"blood",3) && !hasCoilAtLevel(coils,"beast",3) && !hasCoilAtLevel(coils,"banes",3)){
+            if (useShorthandTitleCheckbox.checked && numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils) && hasCoil(coils,"blood") && hasCoil(coils,"beast") && hasCoil(coils,"banes") && !hasCoilAtLevel(coils,"blood",3) && !hasCoilAtLevel(coils,"beast",3) && !hasCoilAtLevel(coils,"banes",3)){
                 output += "<span title='has the three core coils at the same level'>Fundament</span>";
             }
-            else if (numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils)){
+            else if (useShorthandTitleCheckbox.checked && numberOfUnmasteredCoils(coils) > 1 && allUnmasteredCoilsAtSameLevel(coils)){
                 output += "<span title='All unmastered coils are at the same level'>Equilibrium</span>";
                 output = output.replace("of the","of");
             }

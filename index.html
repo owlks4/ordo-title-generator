@@ -20,13 +20,12 @@
                     </strong>
                 </label>
                 <select name="clan" id="clan" onchange="updateTitle()">
-                <option value="ventrue">Ventrue</option>
-                <option value="daeva">Daeva</option>
-                <option value="mekhet">Mekhet</option>
-                <option value="gangrel">Gangrel</option>
-                <option value="nosferatu">Nosferatu</option>
+                    <option value="ventrue">Ventrue</option>
+                    <option value="daeva">Daeva</option>
+                    <option value="mekhet">Mekhet</option>
+                    <option value="gangrel">Gangrel</option>
+                    <option value="nosferatu">Nosferatu</option>
                 </select>
-
                 <br>
                 <br>
                 <strong>Sworn type:</strong>
@@ -58,7 +57,12 @@
                             <td><strong>Coil</strong></td>
                             <td><strong>Rank</strong></td>
                             <td></td>
-                            <td></td>
+                            <td id="prioritise-1-column-header" style="opacity:0.5" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title">
+                                <strong>1</strong>
+                            </td>
+                            <td id="prioritise-2-column-header" style="opacity:0.5" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title">
+                                <strong>2</strong>
+                            </td>
                         </tr>
                     </thead>
                     <tbody id="coilTableBody">
@@ -81,6 +85,7 @@
                 <br>
                 <hr>
                 <h2>Result:</h2>
+                <label for="shorthand-checkbox">Use shorthand form</label> <input name="shorthand" id="shorthand-checkbox" type="checkbox" onchange="updateTitle()">             
                 <h3 id="result"></h3>
             </form>
             <br>
@@ -104,6 +109,8 @@
             <td><input type="number" class="width80" value="1" min="1" max="3" onchange="updateTitle()" oninput="updateTitle()"/>
             </td>
             <td><button type="button" onclick="removeCoil(this)">Remove</button></td>
+            <td><input type="radio" id="prioritise-primary" disabled="true" name="primary-radio-buttons" for="primary-radio-buttons"></td>
+            <td><input type="radio" id="prioritise-secondary" disabled="true" name="secondary-radio-buttons" for="secondary-radio-buttons"></td>
             </tr>
         </template>
     </body>
