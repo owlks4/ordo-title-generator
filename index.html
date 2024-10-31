@@ -86,7 +86,7 @@
                 <hr>
                 <h2>Result:</h2>                
                 <h3 id="result"></h3>
-                <label for="shorthand-checkbox">Use shorthand form</label> <input name="shorthand" id="shorthand-checkbox" type="checkbox" onchange="updateTitle()">             
+                <label for="shorthand-checkbox">Use shorthand form if possible</label> <input name="shorthand" id="shorthand-checkbox" type="checkbox" onchange="updateTitle()">             
             </form>
             <br>
         </main>
@@ -109,8 +109,8 @@
             <td><input type="number" class="width80" value="1" min="1" max="3" onchange="updateTitle()" oninput="updateTitle()"/>
             </td>
             <td><button type="button" onclick="removeCoil(this)">Remove</button></td>
-            <td><input type="radio" id="prioritise-primary" disabled="true" name="primary-radio-buttons" for="primary-radio-buttons"></td>
-            <td><input type="radio" id="prioritise-secondary" disabled="true" name="secondary-radio-buttons" for="secondary-radio-buttons"></td>
+            <td><input type="radio" id="prioritise-primary" disabled="true" name="primary-radio-buttons" for="primary-radio-buttons" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title"></td>
+            <td><input type="radio" id="prioritise-secondary" disabled="true" name="secondary-radio-buttons" for="secondary-radio-buttons" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title"></td>
             </tr>
         </template>
     </body>
