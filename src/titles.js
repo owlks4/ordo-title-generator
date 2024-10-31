@@ -39,6 +39,8 @@ resultElement = document.getElementById("result");
 
 let useShorthandTitleCheckbox = document.getElementById("shorthand-checkbox");
 
+let priorityColHeaders = [document.getElementById("prioritise-1-column-header"), document.getElementById("prioritise-2-column-header")]
+
 if (window.innerWidth < window.innerHeight) {
     document.documentElement.className = "mobile-font-size"
     document.getElementById("result").style = "max-width:70vw;"
@@ -363,6 +365,16 @@ function updateTitle(){
             }
         }
     });
+
+    if (coils.length == 0){
+        priorityColHeaders.forEach(priorityHeader => {
+            priorityHeader.style = "opacity:0";
+        });
+    } else {
+        priorityColHeaders.forEach(priorityHeader => {
+            priorityHeader.style = "opacity:0.5";
+        });
+    }
 
     primaryCoil = retrieveThePrioritisedCoilFromArray(allCoilsThatCouldBePrimary, "primary", coils);
 

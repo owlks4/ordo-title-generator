@@ -58,10 +58,10 @@
                             <td><strong>Rank</strong></td>
                             <td></td>
                             <td id="prioritise-1-column-header" style="opacity:0.5" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title">
-                                <strong>1</strong>
+                                <strong>P</strong>
                             </td>
                             <td id="prioritise-2-column-header" style="opacity:0.5" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title">
-                                <strong>2</strong>
+                                <strong>S</strong>
                             </td>
                         </tr>
                     </thead>
@@ -86,7 +86,9 @@
                 <hr>
                 <h2>Result:</h2>                
                 <h3 id="result"></h3>
-                <label for="shorthand-checkbox">Use shorthand form if possible</label> <input name="shorthand" id="shorthand-checkbox" type="checkbox" onchange="updateTitle()">             
+                <span title="Whether to compress long titles using terms like Draconic, Equilibrium, etc.">
+                    <label for="shorthand-checkbox" ><strong>Use shorthand form if possible</strong></label> <input name="shorthand" id="shorthand-checkbox" type="checkbox" onchange="updateTitle()">
+                </span>                
             </form>
             <br>
         </main>
