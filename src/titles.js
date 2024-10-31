@@ -28,7 +28,8 @@ var swornPrefixes = {
     "heart": ["Feeling","Impaled","Flayed"],
     "labyrinth": ["Trial","Delirious","Bespoke"],
     "stasis": ["Change","Shifting","Amorphous"],
-    "predation": ["Hunt","Stalking","Apex"]
+    "predation": ["Hunt","Stalking","Apex"],
+    "custom": ["Experiment","Experimental","Experimental"]
   }
 
 var rankTitles = ["Tineri","Supplicant","Scribe","Scholar","Initiate","Adept","Master","Philosopher","Illuminous","Architect","Visionary","Immortal","Auspicious","Genius","Eternal","Olympian","Nuncio","Palatine","Princeps","Magister","Emir","Boyar","Sovereign","Monarch","Caesar","Exarch","Bodhisattva","Transcendentalist","Incarnate","Optimus","Eldritch"];
@@ -237,15 +238,6 @@ function capitalise(input){
     return input.charAt(0).toUpperCase() + input.slice(1)
 }
 
-function hasHigherRankThanAllCoilsInThisArray(c, arr){
-    for(let i = 0; i < arr.length; i++){
-        if (c.rank <= i.rank){
-            return false;
-        }
-    }
-    return true;
-}
-
 function getRelevantRadButton(coil, primarySecondaryType){
     return primarySecondaryType == "primary" ? coil.priorityPrimaryRadioButton : coil.prioritySecondaryRadioButton;
 }
@@ -341,10 +333,7 @@ function updateTitle(){
         let coil = new Coil(coilName,coilRank);
 
         coil.priorityPrimaryRadioButton = coilTable.children[i].children[3].firstChild;
-        coil.priorityPrimaryRadioButton.oninput = ()=>{updateTitle();};
-
         coil.prioritySecondaryRadioButton = coilTable.children[i].children[4].firstChild;
-        coil.prioritySecondaryRadioButton.oninput = ()=>{updateTitle();};
 
         coils.push(coil);
         cumulativeCoilRanks += coilRank;
@@ -353,7 +342,7 @@ function updateTitle(){
     coils.sort((a,b)=>{return a.rank == b.rank ? 0 : (a.rank > b.rank ? -1 : 1)}); //sort coils into reverse rank order (so that the primary/secondary calculations flow naturally and we don't have to constantly dethrone coils that were previously thought to hold the position but actually don't)
 
     coils.forEach((coil) => {
-        if (coil.rank != 3 && coil.coilName != "custom"){
+        if (coil.rank != 3){
             if (allCoilsThatCouldBePrimary.length == 0){ //if we're the first coil below three tiers to be processed, because we ordered by rank, it must be a primary coil
                 allCoilsThatCouldBePrimary = [coil];
             } else if (coil.rank == allCoilsThatCouldBePrimary[0].rank){ //if we're the same rank as the first primary coil, then this is also a primary coil
@@ -372,24 +361,32 @@ function updateTitle(){
         });
     } else {
         priorityColHeaders.forEach(priorityHeader => {
-            priorityHeader.style = "opacity:0.5";
+            priorityHeader.style = "opacity:0.85";
         });
     }
 
     primaryCoil = retrieveThePrioritisedCoilFromArray(allCoilsThatCouldBePrimary, "primary", coils);
+    
+    if (allCoilsThatCouldBePrimary.length > 1){ //if there is going to be at least one lingering primary coil that wasn't actually chosen as the principal primary coil, then the unused primary coil(s) will still be of a higher tier than all the potential secondary coils we identified, so we wipe the potential secondary coil list and populate it with the unused primary coils
+        allCoilsThatCouldBeSecondary = [];
+        allCoilsThatCouldBePrimary.forEach(coil => {  //all primary coils that are not the one on display now get pushed into being secondary coils
+            if (coil != primaryCoil){
+                allCoilsThatCouldBeSecondary.push(coil);
+            }
+        });
+    }
 
-    allCoilsThatCouldBePrimary.forEach(coil => {  //all primary coils that are not the one on display now get pushed into being secondary coils
-        if (coil != primaryCoil){
-            allCoilsThatCouldBeSecondary.push(coil);
-        }
-    });
- 
     secondaryCoil = retrieveThePrioritisedCoilFromArray(allCoilsThatCouldBeSecondary, "secondary", coils);
 
     let sanityCheck = checkForMultipleInstancesOfACoil(coils);
 
     if (sanityCheck != null){
         resultElement.innerHTML = "You've added multiple instances of Coil of "+capitalise(sanityCheck)+"!\n\nPlease either remove or change the second instance.";
+        return;
+    }
+
+    if (hasCoil(coils,"ouroboros") && hasCoil(coils,"voivode")){
+        resultElement.innerHTML = "You've listed both Coil of Ouroboros AND Coil of Voivode – but these coils are in direct opposition to each other, so you cannot have both at the same time. Please remove or change one of them.";
         return;
     }
 
@@ -413,8 +410,12 @@ function updateTitle(){
     }
     else if (numberOfMasteredCoils(coils) >= 1){
         for (let i = 0; i < coils.length; i++){
-            if (coils[i].rank == 3 && coils[i].coilName != "custom"){
-                output += "<span title='has mastered coil of "+coils[i].coilName+"'>"+adjectives[coils[i].coilName][2] + " </span>";    
+            if (coils[i].rank == 3){
+                if (coils[i].coilName == "custom"){
+                    output += "<span title='has mastered an eldritch coil'>Experimental </span>";    
+                } else {
+                    output += "<span title='has mastered coil of "+coils[i].coilName+"'>"+adjectives[coils[i].coilName][2] + " </span>";    
+                }
             }
         }
     }
@@ -432,21 +433,16 @@ function updateTitle(){
     }
     output += "<span title='has "+cumulativeCoilRanks+" total coil tiers'>"+rankTitle+"</span>";
 
-    if ((numberOfUnmasteredCoils(coils) > 0 && numberOfUnmasteredCoils(coils) > numberOfUnmasteredCustomCoils(coils)) || hasCoil(coils,"custom")){
+    if (numberOfUnmasteredCoils(coils) > 0){
             output += " of the ";
-
-            if(hasCoil(coils,"custom")){
-                if (numberOfUnmasteredCoils(coils) == 1){
-                    output += "<span title='has only a single in-progress coil'>Dedicated </span>";
-                } 
-                output += "<span title='Eldritch coil'>Experimental </span>";
-            }
 
             output += getInvisibleAetherialOrSidereal(coils);       
             
             if (secondaryCoil != null && !(useShorthandTitleCheckbox.checked && allUnmasteredCoilsAtSameLevel(coils))){
-                output += "<span title='Secondary coil is coil of "+secondaryCoil.coilName+"'>"+adjectives[secondaryCoil.coilName][1]+"</span>";
-            } else if (numberOfUnmasteredCoils(coils) == 1 && !hasCoil(coils,"custom")){
+                let t = secondaryCoil.coilName == "custom" ? "Secondary coil is an eldritch coil" : "Secondary coil is coil of "+secondaryCoil.coilName;
+
+                output += "<span title='"+ t +"'>"+adjectives[secondaryCoil.coilName][1]+"</span>";
+            } else if (numberOfUnmasteredCoils(coils) == 1){
                 output += "<span title='has only a single in-progress coil'>Dedicated </span>";
             }
             
@@ -460,7 +456,8 @@ function updateTitle(){
                 output = output.replace("of the","of");
             }
             else if (primaryCoil != null){
-                output += "<span title='Primary coil is coil of "+primaryCoil.coilName+"'>"+adjectives[primaryCoil.coilName][0]+"</span>"; 
+                let t = primaryCoil.coilName == "custom" ? "Primary coil is an eldritch coil" : "Primary coil is coil of "+primaryCoil.coilName;
+                output += "<span title='"+t+"'>"+adjectives[primaryCoil.coilName][0]+"</span>"; 
             }
     }
 

@@ -125,3 +125,7 @@ table {
 #prioritise-2-column-header {
     text-align:center;
 }
+
+#prioritise-secondary {
+    filter: hue-rotate(290deg);
+}

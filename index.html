@@ -57,10 +57,10 @@
                             <td><strong>Coil</strong></td>
                             <td><strong>Rank</strong></td>
                             <td></td>
-                            <td id="prioritise-1-column-header" style="opacity:0.5" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title">
+                            <td id="prioritise-1-column-header" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title">
                                 <strong>P</strong>
                             </td>
-                            <td id="prioritise-2-column-header" style="opacity:0.5" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title">
+                            <td id="prioritise-2-column-header" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title">
                                 <strong>S</strong>
                             </td>
                         </tr>
@@ -87,7 +87,7 @@
                 <h2>Result:</h2>                
                 <h3 id="result"></h3>
                 <span title="Whether to compress long titles using terms like Draconic, Equilibrium, etc.">
-                    <label for="shorthand-checkbox" ><strong>Use shorthand form if possible</strong></label> <input name="shorthand" id="shorthand-checkbox" type="checkbox" onchange="updateTitle()">
+                    <label for="shorthand-checkbox" ><strong>Use shorthand form if possible</strong></label> <input name="shorthand" id="shorthand-checkbox" checked="true" type="checkbox" onchange="updateTitle()">
                 </span>                
             </form>
             <br>
@@ -111,8 +111,8 @@
             <td><input type="number" class="width80" value="1" min="1" max="3" onchange="updateTitle()" oninput="updateTitle()"/>
             </td>
             <td><button type="button" onclick="removeCoil(this)">Remove</button></td>
-            <td><input type="radio" id="prioritise-primary" disabled="true" name="primary-radio-buttons" for="primary-radio-buttons" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title"></td>
-            <td><input type="radio" id="prioritise-secondary" disabled="true" name="secondary-radio-buttons" for="secondary-radio-buttons" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title"></td>
+            <td><input type="radio" id="prioritise-primary" oninput="updateTitle()" disabled="true" name="primary-radio-buttons" for="primary-radio-buttons" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title"></td>
+            <td><input type="radio" id="prioritise-secondary" oninput="updateTitle()" disabled="true" name="secondary-radio-buttons" for="secondary-radio-buttons" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title"></td>
             </tr>
         </template>
     </body>
