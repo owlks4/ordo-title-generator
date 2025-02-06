@@ -492,7 +492,7 @@ function updateTitle(){
     if (swornType != "none"){
         let swornRankNumber = {"initiate":1, "established":2, "master":3}[document.getElementById("swornRank").value] //convert textual sworn rank into numeric values
         numVotes += swornRankNumber; // for each sworn rank, an additional set of symbols.
-        symbolSetsJustification += "having "+swornRankNumber+" sworn ranks in any sworn; "
+        symbolSetsJustification += "having "+swornRankNumber+" sworn rank"+ (swornRankNumber == 1 ? "" : "s") +" in any sworn; "
     }
 
     if (provostCheckBox.checked){ //the set of symbols you get for being provost
@@ -509,7 +509,10 @@ function updateTitle(){
 
     if (numVotes == 0){
         symbolSetsJustification = "No symbol sets."
+    } else if (numVotes == 1){
+        symbolSetsJustification = symbolSetsJustification.replace("Symbol sets granted by","Symbol set granted by")
     }
+
 
     numVotesOutput.innerHTML = "with <strong>"+numVotes+"</strong> symbol set"+ (numVotes == 1 ? "" : "s");
     numVotesOutput.title = symbolSetsJustification;

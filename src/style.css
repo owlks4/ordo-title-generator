@@ -1,7 +1,7 @@
 * {
     font-family:'Courier New', Courier, monospace;
-    font-family: Arial, Helvetica, sans-serif;
-    letter-spacing: 0.025em;
+    
+
 }
 
 html {
@@ -62,8 +62,8 @@ h2 {
 
 h3 {
     color: rgb(253, 221, 178);
-    margin-top:0.75em;
-    margin-bottom:0.5em;
+    margin-top:0.75m;
+    margin-bottom:0.55em;
     letter-spacing: 0.05em;
 }
 
@@ -75,7 +75,7 @@ table {
     background-color: rgba(128,128,128,0.5);
     border-radius:0.25em;
     padding: 0.5em;
-    min-width:300px;
+    min-width:77%;
 }
 
 th {
