@@ -42,6 +42,10 @@ let useShorthandTitleCheckbox = document.getElementById("shorthand-checkbox");
 
 let priorityColHeaders = [document.getElementById("prioritise-1-column-header"), document.getElementById("prioritise-2-column-header")]
 
+let provostCheckBox = document.getElementById("provost");
+let highCourtCheckBox = document.getElementById("high-court");
+let numVotesOutput = document.getElementById("num-votes-output");
+
 if (window.innerWidth < window.innerHeight) {
     document.documentElement.className = "mobile-font-size"
     document.getElementById("result").style = "max-width:70vw;"
@@ -291,6 +295,11 @@ function retrieveThePrioritisedCoilFromArray(arr, type, allCoils){
 function updateTitle(){
     let output = "";
 
+    numVotesOutput.innerHTML = ""; //we blank these out before the calculation in case the calculation fails due to e.g. a coil conflict, so that the symbol set text doesn't linger from a previous attempt due to an early return.
+    numVotesOutput.title = "";
+
+    let numVotes = 0;
+
     let swornType = "none";
 
     if (document.getElementById("swornRed").checked == true){
@@ -463,7 +472,47 @@ function updateTitle(){
 
     resultElement.innerHTML = output;
 
-    document.body.className = clan;
+    let symbolSetsJustification = "Symbol sets granted by: ";
+
+    if (cumulativeCoilRanks > 0){ //the set of symbols you get for being above tineri
+        numVotes++;
+        symbolSetsJustification += "having at least 1 coil; "
+    }
+
+    numVotes += numberOfMasteredCoils(coils); //an additional set of symbols for each mastered coil you have
+    if (numberOfMasteredCoils(coils) > 0){
+        symbolSetsJustification += "having "+numberOfMasteredCoils(coils)+" mastered coils; "
+    }
+
+    if (cumulativeCoilRanks >= 7){ //the set of symbols you get for being philosopher or higher
+        numVotes++;
+        symbolSetsJustification += "having a rank of Philosopher or higher; "
+    }
+
+    if (swornType != "none"){
+        let swornRankNumber = {"initiate":1, "established":2, "master":3}[document.getElementById("swornRank").value] //convert textual sworn rank into numeric values
+        numVotes += swornRankNumber; // for each sworn rank, an additional set of symbols.
+        symbolSetsJustification += "having "+swornRankNumber+" sworn ranks in any sworn; "
+    }
+
+    if (provostCheckBox.checked){ //the set of symbols you get for being provost
+        numVotes++;
+        symbolSetsJustification += "being provost; "
+    }
+
+    if (highCourtCheckBox.checked){ //the set of symbols you get for being on the high court
+        numVotes++;
+        symbolSetsJustification += "being on the high court; "
+    }
+
+    symbolSetsJustification = symbolSetsJustification.replace(new RegExp("; " + '$'), '.');
+
+    if (numVotes == 0){
+        symbolSetsJustification = "No symbol sets."
+    }
+
+    numVotesOutput.innerHTML = "with <strong>"+numVotes+"</strong> symbol set"+ (numVotes == 1 ? "" : "s");
+    numVotesOutput.title = symbolSetsJustification;
 }
 
 document.getElementById("swornNone").checked = true;

@@ -10,39 +10,49 @@
     </head>
     <body>
         <main>
-            <h1>
+            <h1 style="margin-bottom:0.3em">
                 Ordo Title Generator
             </h1>
+            <hr style="margin-top:0">
             <form>
-                <label for="clan">
-                    <strong>
-                        Clan:
-                    </strong>
-                </label>
-                <select name="clan" id="clan" onchange="updateTitle()">
-                    <option value="ventrue">Ventrue</option>
-                    <option value="daeva">Daeva</option>
-                    <option value="mekhet">Mekhet</option>
-                    <option value="gangrel">Gangrel</option>
-                    <option value="nosferatu">Nosferatu</option>
-                </select>
-                <br>
+                <h3>Basic info</h3>
+                <div style="width:fit-content">
+                    <label for="clan">
+                        <strong>
+                            Clan:
+                        </strong>
+                    </label>
+                    <select style="font-size:1em; width:7em; height:1.75em; margin-top:0.5em;" name="clan" id="clan" onchange="updateTitle()">
+                        <option value="ventrue">Ventrue</option>
+                        <option value="daeva">Daeva</option>
+                        <option value="mekhet">Mekhet</option>
+                        <option value="gangrel">Gangrel</option>
+                        <option value="nosferatu">Nosferatu</option>
+                    </select>
+                </div>                
                 <br>
                 <strong>Sworn type:</strong>
-                <div>
-                    <input type="radio" id="swornNone" name="swornType" checked="true" value="true" onchange="updateTitle()">
-                    <label for="swornNone">None</label><br>
-                    <input type="radio" id="swornRed" name="swornType" checked="false" value="false" onchange="updateTitle()">
-                    <label for="swornRed" class="axe">the Axe</label><br>
-                    <input type="radio" id="swornBlue" name="swornType" checked="false" value="false" onchange="updateTitle()">
-                    <label for="swornBlue" class="dyingLight">the Dying Light</label><br>
-                    <input type="radio" id="swornBlack" name="swornType" checked="false" value="false" onchange="updateTitle()">
-                    <label for="swornBlack" class="mysteries"><strong>the Mysteries</strong></label><br> 
-                </div>
-                    <br>
+                <ul style="display:flex;justify-content: space-around; padding-right:1em;">
+                    <li>
+                        <input type="radio" id="swornNone" name="swornType" checked="true" value="true" onchange="updateTitle()">
+                        <label for="swornNone">None</label><br>
+                    </li>
+                    <li>
+                        <input type="radio" id="swornRed" name="swornType" checked="false" value="false" onchange="updateTitle()">
+                        <label for="swornRed" class="axe">the red</label><br>
+                    </li>
+                    <li>
+                        <input type="radio" id="swornBlue" name="swornType" checked="false" value="false" onchange="updateTitle()">
+                        <label for="swornBlue" class="dyingLight">the blue</label><br>
+                    </li>
+                    <li>
+                        <input type="radio" id="swornBlack" name="swornType" checked="false" value="false" onchange="updateTitle()">
+                        <label for="swornBlack" class="mysteries">the black</label><br> 
+                    </li>                    
+                </ul>
                 <div id = "swornRankDiv">
                     <label for="swornRank"><strong>Sworn rank:</strong></label>
-                    <select name="swornRank" id="swornRank" value="0" onchange="updateTitle()">
+                    <select name="swornRank" id="swornRank" value="initiate" onchange="updateTitle()">
                         <option value="initiate">Initiate</option>
                         <option value="established">Established</option>
                         <option value="master">Master</option>        
@@ -50,45 +60,64 @@
                     <br>
                 </div>         
                 <hr>
-                <h2>Coils</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <td><strong>Coil</strong></td>
-                            <td><strong>Rank</strong></td>
-                            <td></td>
-                            <td id="prioritise-1-column-header" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title">
-                                <strong>P</strong>
-                            </td>
-                            <td id="prioritise-2-column-header" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title">
-                                <strong>S</strong>
-                            </td>
-                        </tr>
-                    </thead>
-                    <tbody id="coilTableBody">
-                    </tbody>
-                    <tfoot>
-                        <tr id="coilTableDummyRow">
-                            <td><button type="button" onclick="addCoil()">Add...</button></td>
-                        </tr>
-                    </tfoot>
-                </table>
-                <h2>Scales</h2>
+                <h3>Coils and Scales</h3>
                 <div style="display:flex;">
-                    <label for="scales" style="margin-right:0.25em;">
-                        <strong>
-                            Number of scales mastered:
-                        </strong>
-                    </label>
-                    <input name="scales" id="scalesMastered" type="number" value="0" min="0" max="9999" onchange="updateTitle()">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Coil</th>
+                                <th>Rank</th>
+                                <th></th>
+                                <th id="prioritise-1-column-header" title="If multiple PRIMARY coils are present, use this column to choose which one gets used in the title">
+                                    P
+                                </th>
+                                <th id="prioritise-2-column-header" title="If multiple SECONDARY coils are present, use this column to choose which one gets used in the title">
+                                    S
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody id="coilTableBody">
+                        </tbody>
+                        <tfoot>
+                            <tr id="coilTableDummyRow">
+                                <td><button type="button" onclick="addCoil()">Add...</button></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    <div style="width:100%;text-align: center;">
+                        <label for="scales" style="margin-right:0.25em;">
+                            <strong>
+                                Number<br>of scales
+                            </strong>                            
+                        </label>
+                        <br>
+                        <input style="margin-top:0.5em;" name="scales" id="scalesMastered" type="number" value="0" min="0" max="9999" onchange="updateTitle()">
+                    </div>
                 </div>
-                <br>
                 <hr>
-                <h2>Result:</h2>                
+                <h3>Miscellaneous</h3>
+                <div style="display:flex;justify-content:space-around;">
+                    <div title="Are you provost?">
+                        <input name="provost" id="provost" type="checkbox" onchange="updateTitle()">
+                        <label for="provost" style="margin-right:0.25em;">
+                            Provost
+                        </label>
+                    </div>
+                    <div title="Are you Prince, Seneschal, Harpy, Sheriff, MoE, or Herald?">
+                        <input name="high-court" id="high-court" type="checkbox" onchange="updateTitle()">
+                        <label for="high-court" style="margin-right:0.25em;">
+                            High court
+                        </label>
+                    </div>
+                    <div title="Whether to compress long titles using terms like Draconic, Equilibrium, etc.">
+                        <input name="shorthand" id="shorthand-checkbox" checked="true" type="checkbox" onchange="updateTitle()">
+                        <label for="shorthand-checkbox" >Use shorthand</label>       
+                    </div>
+                </div>
+                <hr>
+                <h3>Result:</h3>                
                 <h3 id="result"></h3>
-                <span title="Whether to compress long titles using terms like Draconic, Equilibrium, etc.">
-                    <label for="shorthand-checkbox" ><strong>Use shorthand form if possible</strong></label> <input name="shorthand" id="shorthand-checkbox" checked="true" type="checkbox" onchange="updateTitle()">
-                </span>                
+                <p id="num-votes-output"></p>
             </form>
             <br>
         </main>
