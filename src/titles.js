@@ -519,4 +519,9 @@ function updateTitle(){
 }
 
 document.getElementById("swornNone").checked = true;
+
+["swornNone","swornRed","swornBlue","swornBlack"].forEach(type => {
+    document.getElementById(type).parentElement.onclick = ()=>{document.getElementById(type).click()};
+});
+
 updateTitle();

@@ -22,7 +22,7 @@
                             Clan:
                         </strong>
                     </label>
-                    <select style="text-align:center;font-size:0.825em; width:7em; height:1.75em; margin-top:0.25em;" name="clan" id="clan" onchange="updateTitle()">
+                    <select style="text-align:center;font-size:0.825em; width:8em; height:1.75em; margin-top:0.25em;" name="clan" id="clan" onchange="updateTitle()">
                         <option value="ventrue">Ventrue</option>
                         <option value="daeva">Daeva</option>
                         <option value="mekhet">Mekhet</option>
@@ -32,25 +32,25 @@
                 </div>                
                 <br>
                 <strong>Sworn type:</strong>
-                <ul style="display:flex;justify-content: space-around; padding-right:1em;">
-                    <li>
-                        <input type="radio" id="swornNone" name="swornType" checked="true" value="true" onchange="updateTitle()">
+                <ul style="display:flex;justify-content:space-around;padding-right:1em;margin-bottom:0.75em;">
+                    <li class="not-sworn">
+                        <input type="radio" id="swornNone" name="swornType" checked="true" value="true" onchange="updateTitle()" style="margin:0;">
                         <label for="swornNone">None</label><br>
                     </li>
-                    <li>
-                        <input type="radio" id="swornRed" name="swornType" checked="false" value="false" onchange="updateTitle()">
-                        <label for="swornRed" class="axe">red</label><br>
+                    <li class="axe">
+                        <input type="radio" id="swornRed" name="swornType" checked="false" value="false" onchange="updateTitle()" style="margin:0;">
+                        <label for="swornRed">red</label><br>
                     </li>
-                    <li>
-                        <input type="radio" id="swornBlue" name="swornType" checked="false" value="false" onchange="updateTitle()">
-                        <label for="swornBlue" class="dyingLight">blue</label><br>
+                    <li class="dyingLight">
+                        <input type="radio" id="swornBlue" name="swornType" checked="false" value="false" onchange="updateTitle()" style="margin:0;">
+                        <label for="swornBlue">blue</label><br>
                     </li>
-                    <li>
-                        <input type="radio" id="swornBlack" name="swornType" checked="false" value="false" onchange="updateTitle()">
-                        <label for="swornBlack" class="mysteries">black</label><br> 
+                    <li class="mysteries">
+                        <input type="radio" id="swornBlack" name="swornType" checked="false" value="false" onchange="updateTitle()" style="margin:0;">
+                        <label for="swornBlack">black</label><br> 
                     </li>                    
                 </ul>
-                <div id = "swornRankDiv">
+                <div id="swornRankDiv">
                     <label for="swornRank"><strong>Sworn rank:</strong></label>
                     <select name="swornRank" id="swornRank" value="initiate" onchange="updateTitle()">
                         <option value="initiate">Initiate</option>
@@ -59,7 +59,7 @@
                     </select> 
                     <br>
                 </div>         
-                <hr>
+                <hr style="margin-top:1.25em;">
                 <h3>Coils and Scales</h3>
                 <div style="display:flex;">
                     <table>
