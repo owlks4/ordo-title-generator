@@ -46,6 +46,8 @@ let provostCheckBox = document.getElementById("provost");
 let highCourtCheckBox = document.getElementById("high-court");
 let numVotesOutput = document.getElementById("num-votes-output");
 
+let swornRankLabel = document.getElementById("sworn-rank-label");
+
 if (window.innerWidth < window.innerHeight) {
     document.documentElement.className = "mobile-font-size"
     document.getElementById("result").style = "max-width:70vw;"
@@ -316,8 +318,12 @@ function updateTitle(){
         let swornRank = document.getElementById("swornRank").value;
         output += "<span title='Sworn rank: "+swornType + " " + swornRank+"'>"+swornPrefixes[swornType+"_"+swornRank]+"</span>";  
         swornRankDiv.className = "displayed"
+        swornRankLabel.className = swornType+"sworn";
+        swornRankLabel.innerText = swornType+"sworn"
     } else {
         swornRankDiv.className = "hidden"
+        swornRankLabel.className = "not-sworn";
+        swornRankLabel.innerText = "Sworn rank:"
     }
 
     let cumulativeCoilRanks = 0;
@@ -519,9 +525,5 @@ function updateTitle(){
 }
 
 document.getElementById("swornNone").checked = true;
-
-["swornNone","swornRed","swornBlue","swornBlack"].forEach(type => {
-    document.getElementById(type).parentElement.onclick = ()=>{document.getElementById(type).click()};
-});
 
 updateTitle();
